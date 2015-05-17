@@ -68,6 +68,10 @@ orbitdir = choose(-1,1);
 nearsun = instance_nearest(x,y,o_sun);
 nearsundir = point_direction(x,y,nearsun.x,nearsun.y);
 nearsundist = point_distance(x,y,nearsun.x,nearsun.y);
+
+monorbit = point_distance(mouse_x,mouse_y,nearsun.x,nearsun.y);
+monorbitb = 16;
+
 yearspeed = (640-nearsundist)*SpeedMod/400*orbitdir;
 pullmod = 20*scale;
 </string>
@@ -148,6 +152,8 @@ MouseDir = point_direction(x,y,mouse_x,mouse_y);
 
 LMB = mouse_check_button(mb_left);
 RMB = mouse_check_button(mb_right);
+
+monorbit = point_distance(mouse_x,mouse_y,nearsun.x,nearsun.y);
 </string>
           </argument>
         </arguments>
@@ -333,11 +339,13 @@ if(instance_exists(nearsun))
             <kind>1</kind>
             <string>///Draw Line
 
-if(MouseDist &lt; range)
+if(MouseDist &lt; range) or (monorbit &gt; nearsundist-monorbitb &amp;&amp; monorbit &lt; nearsundist+monorbitb)
 {
     draw_line_width_color(x,y,mouse_x,mouse_y,scale,c_c,c_dc);
 }
-
+draw_set_alpha(0.1);
+draw_line_width_color(x,y,nearsun.x,nearsun.y,scale,c_c,c_dc);
+draw_set_alpha(1);
 
 </string>
           </argument>
@@ -398,8 +406,26 @@ if(MouseDist &lt; range)
     var size = "Size: " + string(scale) + "x earth";
     draw_text(x-string_width(size)/2,bbox_top-string_height(size)*3,size);
     
-    draw_set_color(c_white);
 }
+else if(monorbit &gt; nearsundist-monorbitb &amp;&amp; monorbit &lt; nearsundist+monorbitb)
+{
+    draw_set_color(c_lc);    
+    
+    //Name
+    draw_text(mouse_x-string_width(name)/2,mouse_y-string_height(name),name);
+    
+    //Year Speed
+    var year = "Year: " + string(yearspeed) + " days";
+    draw_text(mouse_x-string_width(year)/2,mouse_y-string_height(year)*2,year);
+    
+    //Size
+    var size = "Size: " + string(scale) + "x earth";
+    draw_text(mouse_x-string_width(size)/2,mouse_y-string_height(size)*3,size);
+    
+    //Image
+    draw_sprite_ext(s_circle,0,mouse_x,mouse_y+sprite_height,scale,scale,image_angle,c_c,0.3);
+}
+draw_set_color(c_white);
 </string>
           </argument>
         </arguments>
