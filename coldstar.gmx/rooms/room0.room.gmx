@@ -12,7 +12,7 @@
   <showcolour>-1</showcolour>
   <code>randomize();
 
-var ent = 100;
+var ent = 50;
 var sun = 5;
 
 repeat irandom_range(ent/2,ent)
@@ -21,7 +21,7 @@ repeat irandom_range(ent/2,ent)
     var ry= random(room_height);
     instance_create(rx,ry,o_geometry);
 }
-repeat sun
+repeat irandom_range(1,sun)
 {
     var rx = random(room_width);
     var ry= random(room_height);
@@ -33,11 +33,22 @@ instance_create(0,0,director);
 //Resolution
 global.ResX = display_get_width();
 global.ResY = display_get_height();
-window_set_size(global.ResX/2,global.ResY/2);
-view_wview = global.ResX;
-view_hview = global.ResY;
-view_wport = global.ResX/2;
-view_hport = global.ResY/2;</code>
+if(window_get_fullscreen())
+{
+    window_set_size(global.ResX,global.ResY);
+    view_wview = global.ResX;
+    view_hview = global.ResY;
+    view_wport = global.ResX;
+    view_hport = global.ResY;
+}
+else
+{
+    window_set_size(global.ResX/2,global.ResY/2);
+    view_wview = global.ResX;
+    view_hview = global.ResY;
+    view_wport = global.ResX/2;
+    view_hport = global.ResY/2;
+}</code>
   <enableViews>-1</enableViews>
   <clearViewBackground>-1</clearViewBackground>
   <makerSettings>

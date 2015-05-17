@@ -28,7 +28,7 @@
             <string>///Setup
 
 set_random_color();
-set_scale(random(3));
+set_scale(random(5));
 set_name();
 </string>
           </argument>
@@ -53,7 +53,7 @@ set_name();
             <string>///Variables
 
 //Ranges
-range = sprite_width*scale*1.5;
+range = sprite_width*scale/4*1.5;
 MouseDist = point_distance(x,y,mouse_x,mouse_y);
 MouseDir = point_direction(x,y,mouse_x,mouse_y);
 
@@ -65,6 +65,11 @@ MaxSpeed = Speed*8 * SpeedMod;
 
 //Orbit
 orbitdir = choose(-1,1);
+nearsun = instance_nearest(x,y,o_sun);
+nearsundir = point_direction(x,y,nearsun.x,nearsun.y);
+nearsundist = point_distance(x,y,nearsun.x,nearsun.y);
+yearspeed = (640-nearsundist)*SpeedMod/400*orbitdir;
+pullmod = 20*scale;
 </string>
           </argument>
         </arguments>
@@ -92,7 +97,7 @@ orbitdir = choose(-1,1);
 depth = -y;
 
 //Rotation
-image_angle += SpeedMod;
+image_angle += SpeedMod*orbitdir;
 </string>
           </argument>
         </arguments>
@@ -167,9 +172,6 @@ RMB = mouse_check_button(mb_right);
             <kind>1</kind>
             <string>///Attract and Detract
 
-var pullmod = 20;
-pullmod *= scale;
-
 /*LMB*/
 if(LMB)
 {
@@ -189,7 +191,8 @@ if(RMB)
 }
 
 //Speed Control
-if(speed &gt; MaxSpeed) speed = MaxSpeed*pullmod;
+if(speed &gt; MaxSpeed) speed = MaxSpeed*(pullmod/2);
+friction = 0.1*speed;
 </string>
           </argument>
         </arguments>
@@ -212,11 +215,39 @@ if(speed &gt; MaxSpeed) speed = MaxSpeed*pullmod;
             <kind>1</kind>
             <string>///Orbit
 
-var nearsun = instance_nearest(x,y,o_sun);
-var nearsundir = point_direction(x,y,nearsun.x,nearsun.y);
-var nearsundist = point_distance(x,y,nearsun.x,nearsun.y);
+nearsun = instance_nearest(x,y,o_sun);
+nearsundir = point_direction(x,y,nearsun.x,nearsun.y);
+nearsundist = point_distance(x,y,nearsun.x,nearsun.y);
+
+yearspeed = nearsundist/((640-nearsundist)*SpeedMod/400*orbitdir);
+yearspeed = round(yearspeed);
+if(yearspeed &lt; 0) yearspeed *= -1;
 
 orbit(nearsun.x,nearsun.y,nearsundist,(640-nearsundist)*SpeedMod/400*orbitdir);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="o_geometry">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Collision
+motion_add(point_direction(x,y,other.x,other.y)+180,Speed*pullmod/room_speed);
 </string>
           </argument>
         </arguments>
@@ -249,9 +280,37 @@ if(MouseDist &lt; range)
 else
 {
     draw_set_alpha(0.06);
-    draw_circle_color(x,y,range/4,c_c,c_dc,false);
+    draw_circle_color(x,y,range/2,c_c,c_dc,false);
     draw_set_alpha(1);
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw Orbit
+if(instance_exists(nearsun))
+{
+    draw_set_alpha(0.15);
+    draw_circle_color(nearsun.x,nearsun.y,nearsundist,c_c,c_c,true);
+    draw_set_alpha(1);
+}
+
 </string>
           </argument>
         </arguments>
@@ -322,14 +381,23 @@ draw_self();
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Draw Name
-
-var ncol = make_color_rgb(r+(255-r)/2,g+(255-g)/2,b+(255-b)/2);
+            <string>///Draw Info
 
 if(MouseDist &lt; range)
 {
-    draw_set_color(ncol);
+    draw_set_color(c_lc);
+    
+    //Name
     draw_text(x-string_width(name)/2,bbox_top-string_height(name),name);
+    
+    //Year Speed
+    var year = "Year: " + string(yearspeed) + " days";
+    draw_text(x-string_width(year)/2,bbox_top-string_height(year)*2,year);
+    
+    //Size
+    var size = "Size: " + string(scale) + "x earth";
+    draw_text(x-string_width(size)/2,bbox_top-string_height(size)*3,size);
+    
     draw_set_color(c_white);
 }
 </string>
