@@ -8,6 +8,37 @@
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
+    <event eventtype="0" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Center Camera on Sun
+portmod = global.genmod;
+if(instance_exists(o_sun))
+{
+    nearsun = instance_nearest(global.ResX*global.genmod/2,global.ResY*global.genmod/2,o_sun);
+}
+view_xview = nearsun.x - view_wview/2;
+view_yview = nearsun.y - view_hview/2;
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="3" enumb="0">
       <action>
         <libid>1</libid>
@@ -26,23 +57,12 @@
           <argument>
             <kind>1</kind>
             <string>///Fullscreen
-/*
-window_set_size(global.ResX/2,global.ResY/2);
-view_wview = global.ResX/2;
-view_hview = global.ResY/2;
-view_wport = global.ResX/2;
-view_hport = global.ResY/2;
-*/
 var F = keyboard_check_pressed(ord('F'));
 if(window_get_fullscreen())
 {
     if(F)
     {
         window_set_size(global.ResX/2,global.ResY/2);
-        view_wview = global.ResX;
-        view_hview = global.ResY;
-        view_wport = global.ResX/2;
-        view_hport = global.ResY/2;
         window_set_fullscreen(false);
     }
 }
@@ -51,13 +71,13 @@ else
     if(F)
     {
         window_set_size(global.ResX,global.ResY);
-        view_wview = global.ResX;
-        view_hview = global.ResY;
-        view_wport = global.ResX;
-        view_hport = global.ResY;
         window_set_fullscreen(true);
     }
 }
+view_wview = global.ResX*portmod/4;
+view_hview = global.ResY*portmod/4;
+view_wport = global.ResX;
+view_hport = global.ResY;
 </string>
           </argument>
         </arguments>
@@ -82,6 +102,45 @@ else
 
 if(keyboard_check_pressed(vk_escape)) game_end();
 if(keyboard_check_pressed(ord('R'))) game_restart();
+
+/*Scroll*/
+var scroll = 24;
+var ease = scroll;
+if(mouse_wheel_up())
+{
+    portmod -= scroll/room_speed;
+    view_xview += ease;
+    view_yview += ease;
+}
+if(mouse_wheel_down()) 
+{
+    portmod += scroll/room_speed;
+    view_xview -= ease;
+    view_yview -= ease;
+}
+
+if(mouse_check_button(mb_middle)) and (portmod != global.genmod)
+{
+ if(portmod &lt; global.genmod) portmod += scroll/room_speed/2;
+ else portmod -= scroll/room_speed/2;
+}
+
+/*Side Camera*/
+var border = 32;
+var mx = window_mouse_get_x();
+var my = window_mouse_get_y();
+if(mx &lt;= border) view_xview -= scroll;
+if(mx &gt;= window_get_width()-border) view_xview += scroll;
+if(my &lt;= border) view_yview -= scroll;
+if(my &gt;= window_get_height()-border) view_yview += scroll;
+
+if(keyboard_check_pressed(ord('C')))
+{
+    view_xview = nearsun.x - view_wview/2;
+    view_yview = nearsun.y - view_hview/2;
+}
+
+
 </string>
           </argument>
         </arguments>

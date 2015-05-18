@@ -12,23 +12,7 @@
   <showcolour>-1</showcolour>
   <code>randomize();
 
-var ent = 50;
-var sun = 5;
-
-repeat irandom_range(ent/2,ent)
-{
-    var rx = random(room_width);
-    var ry= random(room_height);
-    instance_create(rx,ry,o_geometry);
-}
-repeat irandom_range(1,sun)
-{
-    var rx = random(room_width);
-    var ry= random(room_height);
-    instance_create(rx,ry,o_sun);
-}
-
-instance_create(0,0,director);
+global.genmod = 4;
 
 //Resolution
 global.ResX = display_get_width();
@@ -36,19 +20,46 @@ global.ResY = display_get_height();
 if(window_get_fullscreen())
 {
     window_set_size(global.ResX,global.ResY);
-    view_wview = global.ResX;
-    view_hview = global.ResY;
+    view_wview = global.ResX*global.genmod/4;
+    view_hview = global.ResY*global.genmod/4;
     view_wport = global.ResX;
     view_hport = global.ResY;
 }
 else
 {
     window_set_size(global.ResX/2,global.ResY/2);
-    view_wview = global.ResX;
-    view_hview = global.ResY;
-    view_wport = global.ResX/2;
-    view_hport = global.ResY/2;
-}</code>
+    view_wview = global.ResX*global.genmod/4;
+    view_hview = global.ResY*global.genmod/4;
+    view_wport = global.ResX;
+    view_hport = global.ResY;
+}
+
+//Generation
+
+/*Planets*/
+var ent = irandom_range(500,1000);
+repeat irandom_range(ent/2,ent)
+{
+    var rx = random_range(global.ResX*global.genmod,global.ResX*global.genmod*global.genmod);
+    var ry= random_range(global.ResY*global.genmod,global.ResY*global.genmod*global.genmod);
+    instance_create(rx,ry,o_geometry);
+}
+
+/*Suns*/
+var sun = 1;
+if(instance_exists(o_geometry))
+{
+    sun = round(o_geometry.instance_count/5);
+}
+if(sun &lt; 2) sun = 2;
+repeat irandom_range(1,sun)
+{
+    var rx = random_range(global.ResX*global.genmod,global.ResX*global.genmod*global.genmod);
+    var ry= random_range(global.ResY*global.genmod,global.ResY*global.genmod*global.genmod);
+    instance_create(rx,ry,o_sun);
+}
+
+instance_create(0,0,director);</code>
   <enableViews>-1</enableViews>
   <clearViewBackground>-1</clearViewBackground>
   <makerSettings>
@@ -78,14 +89,14 @@ else
     <background visible="0" foreground="0" name="" x="0" y="0" htiled="-1" vtiled="-1" hspeed="0" vspeed="0" stretch="0"/>
   </backgrounds>
   <views>
-    <view visible="-1" objName="" xview="0" yview="0" wview="640" hview="480" xport="0" yport="0" wport="640" hport="480" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
-    <view visible="0" objName="" xview="0" yview="0" wview="640" hview="480" xport="0" yport="0" wport="640" hport="480" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
-    <view visible="0" objName="" xview="0" yview="0" wview="640" hview="480" xport="0" yport="0" wport="640" hport="480" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
-    <view visible="0" objName="" xview="0" yview="0" wview="640" hview="480" xport="0" yport="0" wport="640" hport="480" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
-    <view visible="0" objName="" xview="0" yview="0" wview="640" hview="480" xport="0" yport="0" wport="640" hport="480" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
-    <view visible="0" objName="" xview="0" yview="0" wview="640" hview="480" xport="0" yport="0" wport="640" hport="480" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
-    <view visible="0" objName="" xview="0" yview="0" wview="640" hview="480" xport="0" yport="0" wport="640" hport="480" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
-    <view visible="0" objName="" xview="0" yview="0" wview="640" hview="480" xport="0" yport="0" wport="640" hport="480" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
+    <view visible="-1" objName="&lt;undefined&gt;" xview="0" yview="0" wview="640" hview="480" xport="0" yport="0" wport="640" hport="480" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
+    <view visible="0" objName="&lt;undefined&gt;" xview="0" yview="0" wview="640" hview="480" xport="0" yport="0" wport="640" hport="480" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
+    <view visible="0" objName="&lt;undefined&gt;" xview="0" yview="0" wview="640" hview="480" xport="0" yport="0" wport="640" hport="480" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
+    <view visible="0" objName="&lt;undefined&gt;" xview="0" yview="0" wview="640" hview="480" xport="0" yport="0" wport="640" hport="480" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
+    <view visible="0" objName="&lt;undefined&gt;" xview="0" yview="0" wview="640" hview="480" xport="0" yport="0" wport="640" hport="480" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
+    <view visible="0" objName="&lt;undefined&gt;" xview="0" yview="0" wview="640" hview="480" xport="0" yport="0" wport="640" hport="480" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
+    <view visible="0" objName="&lt;undefined&gt;" xview="0" yview="0" wview="640" hview="480" xport="0" yport="0" wport="640" hport="480" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
+    <view visible="0" objName="&lt;undefined&gt;" xview="0" yview="0" wview="640" hview="480" xport="0" yport="0" wport="640" hport="480" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
   </views>
   <instances/>
   <tiles/>

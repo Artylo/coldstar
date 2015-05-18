@@ -70,10 +70,13 @@ nearsundir = point_direction(x,y,nearsun.x,nearsun.y);
 nearsundist = point_distance(x,y,nearsun.x,nearsun.y);
 
 monorbit = point_distance(mouse_x,mouse_y,nearsun.x,nearsun.y);
-monorbitb = 16;
+monorbitb = 8;
 
-yearspeed = (640-nearsundist)*SpeedMod/400*orbitdir;
 pullmod = 20*scale;
+
+//Info
+yearspeed = (640-nearsundist)*SpeedMod/400*orbitdir;
+dayspeed = 360/SpeedMod/room_speed;
 </string>
           </argument>
         </arguments>
@@ -406,6 +409,10 @@ if(MouseDist &lt; range)
     var size = "Size: " + string(scale) + "x earth";
     draw_text(x-string_width(size)/2,bbox_top-string_height(size)*3,size);
     
+    //Day Speed
+    var day = "Day: " + string(dayspeed) + "h";
+    draw_text(x-string_width(day)/2,bbox_top-string_height(day)*4,day);
+    
 }
 else if(monorbit &gt; nearsundist-monorbitb &amp;&amp; monorbit &lt; nearsundist+monorbitb)
 {
@@ -421,6 +428,10 @@ else if(monorbit &gt; nearsundist-monorbitb &amp;&amp; monorbit &lt; nearsundist
     //Size
     var size = "Size: " + string(scale) + "x earth";
     draw_text(mouse_x-string_width(size)/2,mouse_y-string_height(size)*3,size);
+    
+    //Day Speed
+    var day = "Day: " + string(dayspeed) + "h";
+    draw_text(mouse_x-string_width(day)/2,mouse_y-string_height(day)*4,day);
     
     //Image
     draw_sprite_ext(s_circle,0,mouse_x,mouse_y+sprite_height,scale,scale,image_angle,c_c,0.3);
