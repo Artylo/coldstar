@@ -58,10 +58,7 @@ MouseDist = point_distance(x,y,mouse_x,mouse_y);
 MouseDir = point_direction(x,y,mouse_x,mouse_y);
 
 //Movement
-SpeedMod = 1/scale;
-friction = 0.01 * SpeedMod;
-Speed    = friction*2 * SpeedMod;
-MaxSpeed = Speed*8 * SpeedMod;
+SpeedMod = 1/scale/2;
 
 //Orbit
 orbitdir = choose(-1,1);
@@ -77,6 +74,34 @@ pullmod = 20*scale;
 //Info
 yearspeed = (640-nearsundist)*SpeedMod/400*orbitdir;
 dayspeed = 360/SpeedMod/room_speed;
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Create Satellites
+satellites = irandom(5);
+for(var i = 1; i &lt;= satellites; i++)
+{
+    instance_create(x,y+i*scale,o_satellite)
+}
+range = satellites*scale*8;
+
 </string>
           </argument>
         </arguments>
@@ -181,7 +206,8 @@ monorbit = point_distance(mouse_x,mouse_y,nearsun.x,nearsun.y);
             <kind>1</kind>
             <string>///Attract and Detract
 
-/*LMB*/
+/*
+//LMB
 if(LMB)
 {
     if(MouseDist &lt;= range &amp;&amp; MouseDist &gt;= 1)
@@ -190,7 +216,7 @@ if(LMB)
     }
 }
 
-/*RMB*/
+//RMB
 if(RMB)
 {
     if(MouseDist &lt;= range)
@@ -201,7 +227,8 @@ if(RMB)
 
 //Speed Control
 if(speed &gt; MaxSpeed) speed = MaxSpeed*(pullmod/2);
-friction = 0.1*speed;
+friction = 0.01*SpeedMod*pullmod;
+*/
 </string>
           </argument>
         </arguments>
@@ -256,7 +283,57 @@ orbit(nearsun.x,nearsun.y,nearsundist,(640-nearsundist)*SpeedMod/400*orbitdir);
           <argument>
             <kind>1</kind>
             <string>///Collision
-motion_add(point_direction(x,y,other.x,other.y)+180,Speed*pullmod/room_speed);
+//motion_add(point_direction(x,y,other.x,other.y)+180,Speed*pullmod/room_speed);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw Info
+
+if(monorbit &gt; nearsundist-monorbitb &amp;&amp; monorbit &lt; nearsundist+monorbitb)
+{
+    draw_set_color(c_lc);    
+    //Name
+    draw_text(window_mouse_get_x()-string_width(name)/2,window_mouse_get_y()-string_height(name),name);
+    
+    //Year Speed
+    var year = "Year: " + string(yearspeed) + " days";
+    draw_text(window_mouse_get_x()-string_width(year)/2,window_mouse_get_y()-string_height(year)*2,year);
+    
+    //Size
+    var size = "Size: " + string(scale) + "x earth";
+    draw_text(window_mouse_get_x()-string_width(size)/2,window_mouse_get_y()-string_height(size)*3,size);
+    
+    //Day Speed
+    var day = "Day: " + string(dayspeed) + "h";
+    draw_text(window_mouse_get_x()-string_width(day)/2,window_mouse_get_y()-string_height(day)*4,day);
+    
+    //Satellites
+    var sat = "Satellites: " + string(satellites);
+    draw_text(window_mouse_get_x()-string_width(sat)/2,window_mouse_get_y()-string_height(sat)*5,sat);
+    
+    //Image
+    draw_sprite_ext(s_circle,0,window_mouse_get_x(),window_mouse_get_y()+sprite_height,scale,scale,image_angle,c_c,0.3);
+}
+draw_set_color(c_white);
 </string>
           </argument>
         </arguments>
@@ -280,18 +357,10 @@ motion_add(point_direction(x,y,other.x,other.y)+180,Speed*pullmod/room_speed);
           <argument>
             <kind>1</kind>
             <string>///Draw Range Circle
-if(MouseDist &lt; range)
-{
-    draw_set_alpha(0.06);
-    draw_circle_color(x,y,range,c_dc,c_c,false);
-    draw_set_alpha(1);
-}
-else
-{
-    draw_set_alpha(0.06);
-    draw_circle_color(x,y,range/2,c_c,c_dc,false);
-    draw_set_alpha(1);
-}
+
+draw_set_alpha(0.06);
+draw_circle_color(x,y,range,c_dc,c_c,false);
+draw_set_alpha(1);
 </string>
           </argument>
         </arguments>
@@ -342,7 +411,7 @@ if(instance_exists(nearsun))
             <kind>1</kind>
             <string>///Draw Line
 
-if(MouseDist &lt; range) or (monorbit &gt; nearsundist-monorbitb &amp;&amp; monorbit &lt; nearsundist+monorbitb)
+if(monorbit &gt; nearsundist-monorbitb &amp;&amp; monorbit &lt; nearsundist+monorbitb)
 {
     draw_line_width_color(x,y,mouse_x,mouse_y,scale,c_c,c_dc);
 }
@@ -372,71 +441,6 @@ draw_set_alpha(1);
             <kind>1</kind>
             <string>///DRAW SELF
 draw_self();
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Draw Info
-
-if(MouseDist &lt; range)
-{
-    draw_set_color(c_lc);
-    
-    //Name
-    draw_text(x-string_width(name)/2,bbox_top-string_height(name),name);
-    
-    //Year Speed
-    var year = "Year: " + string(yearspeed) + " days";
-    draw_text(x-string_width(year)/2,bbox_top-string_height(year)*2,year);
-    
-    //Size
-    var size = "Size: " + string(scale) + "x earth";
-    draw_text(x-string_width(size)/2,bbox_top-string_height(size)*3,size);
-    
-    //Day Speed
-    var day = "Day: " + string(dayspeed) + "h";
-    draw_text(x-string_width(day)/2,bbox_top-string_height(day)*4,day);
-    
-}
-else if(monorbit &gt; nearsundist-monorbitb &amp;&amp; monorbit &lt; nearsundist+monorbitb)
-{
-    draw_set_color(c_lc);    
-    
-    //Name
-    draw_text(mouse_x-string_width(name)/2,mouse_y-string_height(name),name);
-    
-    //Year Speed
-    var year = "Year: " + string(yearspeed) + " days";
-    draw_text(mouse_x-string_width(year)/2,mouse_y-string_height(year)*2,year);
-    
-    //Size
-    var size = "Size: " + string(scale) + "x earth";
-    draw_text(mouse_x-string_width(size)/2,mouse_y-string_height(size)*3,size);
-    
-    //Day Speed
-    var day = "Day: " + string(dayspeed) + "h";
-    draw_text(mouse_x-string_width(day)/2,mouse_y-string_height(day)*4,day);
-    
-    //Image
-    draw_sprite_ext(s_circle,0,mouse_x,mouse_y+sprite_height,scale,scale,image_angle,c_c,0.3);
-}
-draw_set_color(c_white);
 </string>
           </argument>
         </arguments>

@@ -21,6 +21,7 @@
   </scripts>
   <objects name="objects">
     <object>objects\o_geometry</object>
+    <object>objects\o_satellite</object>
     <object>objects\o_sun</object>
     <object>objects\director</object>
   </objects>

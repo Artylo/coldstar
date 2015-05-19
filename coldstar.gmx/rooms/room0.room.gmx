@@ -36,17 +36,35 @@ else
 
 //Generation
 
-/*Planets*/
-var ent = irandom_range(500,1000);
+var planet_average = 500;
+var planets = irandom_range(round(planet_average/2),planet_average);
+var suns = round(planets/5);
+if (suns &lt; 1) suns = 1;
+
+for(var i = 0; i &lt; planets; i++)
+{
+    var rx = random_range(global.ResX*global.genmod, global.ResX*global.genmod*global.genmod);
+    var ry = random_range(global.ResY*global.genmod, global.ResY*global.genmod*global.genmod);    
+    instance_create(rx,ry,o_geometry);
+}
+for(var i = 0; i &lt; suns; i++)
+{
+    var rx = random_range(global.ResX*global.genmod, global.ResX*global.genmod*global.genmod);
+    var ry = random_range(global.ResY*global.genmod, global.ResY*global.genmod*global.genmod);    
+    instance_create(rx,ry,o_sun);
+}
+
+/*Planets
+var ent = 1000;
 repeat irandom_range(ent/2,ent)
 {
-    var rx = random_range(global.ResX*global.genmod,global.ResX*global.genmod*global.genmod);
-    var ry= random_range(global.ResY*global.genmod,global.ResY*global.genmod*global.genmod);
+    var rx = random_range(global.ResX*global.genmod,global.ResX*global.genmod);
+    var ry= random_range(global.ResY*global.genmod,global.ResY*global.genmod);
     instance_create(rx,ry,o_geometry);
 }
 
-/*Suns*/
-var sun = 1;
+/*Suns
+var sun;
 if(instance_exists(o_geometry))
 {
     sun = round(o_geometry.instance_count/5);
@@ -54,11 +72,11 @@ if(instance_exists(o_geometry))
 if(sun &lt; 2) sun = 2;
 repeat irandom_range(1,sun)
 {
-    var rx = random_range(global.ResX*global.genmod,global.ResX*global.genmod*global.genmod);
-    var ry= random_range(global.ResY*global.genmod,global.ResY*global.genmod*global.genmod);
+    var rx = random_range(global.ResX*global.genmod,global.ResX*global.genmod);
+    var ry= random_range(global.ResY*global.genmod,global.ResY*global.genmod);
     instance_create(rx,ry,o_sun);
 }
-
+*/
 instance_create(0,0,director);</code>
   <enableViews>-1</enableViews>
   <clearViewBackground>-1</clearViewBackground>
