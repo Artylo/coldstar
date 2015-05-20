@@ -94,6 +94,52 @@ zn = z;
         </arguments>
       </action>
     </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>hx = display_get_width()/2;
+hy = display_get_height();
+
+if(window_get_fullscreen())
+{
+    draw_text(hx-string_width(global.name3d)/2,hy-string_height(global.name3d)*2,global.name3d);
+}
+else
+{
+    draw_text(hx/2-string_width(global.name3d)/2,hy/2-string_height(global.name3d)*2,global.name3d);
+}
+
+if(global.life3d)
+{
+    var homeof = "home of the " + global.lifename3d + "-ians";
+    if(window_get_fullscreen())
+    {
+        draw_text(hx-string_width(homeof)/2,hy-string_height(homeof)*1,homeof);
+    }
+    else
+    {
+        draw_text(hx/2-string_width(homeof)/2,hy/2-string_height(homeof)*1,homeof);
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="8" enumb="0">
       <action>
         <libid>1</libid>
@@ -112,27 +158,16 @@ zn = z;
           <argument>
             <kind>1</kind>
             <string>///Camera 3D
-/*
-direction -= ( display_mouse_get_x() - display_get_width()/2 )/5;
-display_mouse_set( display_get_width()/2 , display_get_height()/2 );
 
-//DirNext
-xn = lengthdir_x( 100, direction )+ x;
-yn = lengthdir_y( 100, direction )+ y;
-zn = ( display_mouse_get_y() - display_get_height()/2 )/2;
-
-//Projection
-draw_set_color(c_white);
-d3d_set_projection(x,y,z,xn,yn,zn,0,0,1);
-*/
 
 direction = (display_mouse_get_x()-(display_get_width()/2))/5;
- zn = (display_mouse_get_y()-(display_get_height()/2))/2;
-  //display_mouse_set(display_get_width()/2,display_get_height()/2);
-   xn = lengthdir_x(100,direction)+x;
-    yn = lengthdir_y(100,direction)+y;
-     draw_set_color(c_white);
-      d3d_set_projection(x,y,z,xn,yn,zn,0,0,1);
+zn = (display_mouse_get_y()-(display_get_height()/2))/2;
+xn = lengthdir_x(100,direction)+x;
+yn = lengthdir_y(100,direction)+y;
+draw_set_color(global.col3d);
+d3d_set_projection(x,y,z,xn,yn,zn,0,0,1);
+
+d3d_draw_ellipsoid(x-2000,y-2000,z-1000,x+2000,y+2000,z+1000,background_get_texture(stars3d),32,32,24);
 </string>
           </argument>
         </arguments>

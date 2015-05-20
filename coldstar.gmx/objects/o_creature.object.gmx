@@ -25,12 +25,11 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>image_speed = 0.1;
+            <string>image_speed = 0;
 
-var r = irandom(255);
-var g = irandom(255);
-var b = irandom(255);
-image_blend = make_color_rgb(r,g,b);
+image_index = global.lifekind3d;
+
+image_blend = global.col3d;
 </string>
           </argument>
         </arguments>

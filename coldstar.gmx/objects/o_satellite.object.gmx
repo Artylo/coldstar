@@ -28,7 +28,7 @@
             <string>///Setup
 set_random_color();
 set_scale(random_range(0.1,1));
-set_name();
+name = set_name();
 nearplan = instance_nearest(x,y,o_geometry);
 </string>
           </argument>
@@ -159,10 +159,16 @@ draw_self();
             <kind>1</kind>
             <string>///Draw Name
 
+var mx = window_mouse_get_x();
+var my = window_mouse_get_y();
+
 if(instance_position(mouse_x,mouse_y,o_satellite) == id)
 {
     draw_set_color(c_lc);
-    draw_text(x-string_width(name)/2,bbox_top-string_height(name),name);
+    
+    //Name
+    draw_text(mx-string_width(name)/2,my-string_height(name),name);
+    
     draw_set_color(c_white);
 }
 </string>

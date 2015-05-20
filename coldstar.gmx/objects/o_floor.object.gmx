@@ -27,9 +27,11 @@
             <kind>1</kind>
             <string>///Draw Floor
 var tex = background_get_texture(bg_floor);
-draw_set_color(c_red);
+draw_set_color(global.col3d);
 d3d_draw_floor(0,0,0,room_width,room_height,0,tex,room_width/64,room_height/64);
 draw_set_color(c_white);
+
+
 </string>
           </argument>
         </arguments>

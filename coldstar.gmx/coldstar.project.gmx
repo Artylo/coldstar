@@ -14,6 +14,7 @@
   </sprites>
   <backgrounds name="background">
     <background>background\stars</background>
+    <background>background\stars3d</background>
     <background>background\bg_floor</background>
   </backgrounds>
   <paths name="paths"/>
@@ -24,19 +25,21 @@
     <script>scripts\set_name.gml</script>
   </scripts>
   <objects name="objects">
-    <object>objects\o_geometry</object>
-    <object>objects\o_satellite</object>
-    <object>objects\o_sun</object>
-    <object>objects\director</object>
-    <objects name="3d">
+    <objects name="2D">
+      <object>objects\o_geometry</object>
+      <object>objects\o_satellite</object>
+      <object>objects\o_sun</object>
+      <object>objects\director</object>
+    </objects>
+    <objects name="3D">
       <object>objects\o_player</object>
       <object>objects\o_floor</object>
       <object>objects\o_creature</object>
     </objects>
   </objects>
   <rooms name="rooms">
-    <room>rooms\r3d</room>
     <room>rooms\room0</room>
+    <room>rooms\r3d</room>
   </rooms>
   <help>
     <rtf>help.rtf</rtf>
