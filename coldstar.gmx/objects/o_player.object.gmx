@@ -63,7 +63,55 @@ zn = z;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if(keyboard_check_pressed(vk_escape)) game_end();
+            <string>///Fullscreen
+var F = keyboard_check_pressed(ord('F'));
+if(window_get_fullscreen())
+{
+    if(F)
+    {
+        window_set_size(global.ResX/2,global.ResY/2);
+        window_set_fullscreen(false);
+    }
+}
+else
+{
+    if(F)
+    {
+        window_set_size(global.ResX,global.ResY);
+        window_set_fullscreen(true);
+    }
+}
+view_wview = global.ResX*global.genmod/4;
+view_hview = global.ResY*global.genmod/4;
+view_wport = global.ResX;
+view_hport = global.ResY;
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Controlls
+
+if(keyboard_check_pressed(vk_escape)) 
+{
+    d3d_end();
+    room_goto_previous();
+}
 
  friction = 1; 
  if keyboard_check(ord('W')) speed = 6; 
