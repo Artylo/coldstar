@@ -29,7 +29,10 @@
 d3d_start();
 d3d_set_lighting(0);
 d3d_set_hidden(1);
+d3d_set_shading(false);
 draw_set_alpha(1);
+
+drawdist = 2000;
 
 direction = 0;
 x = x;
@@ -137,6 +140,17 @@ if(keyboard_check_pressed(vk_escape))
         y = yn; 
     }
  }
+ 
+ if keyboard_check(ord('Q'))
+ {
+    z += 6; 
+    zn += 6;
+ }
+ if keyboard_check(ord('E'))
+ {
+    z += -6; 
+    zn += -6;
+ }
 </string>
           </argument>
         </arguments>
@@ -212,10 +226,11 @@ direction = (display_mouse_get_x()-(display_get_width()/2))/5;
 zn = (display_mouse_get_y()-(display_get_height()/2))/2;
 xn = lengthdir_x(100,direction)+x;
 yn = lengthdir_y(100,direction)+y;
-draw_set_color(global.col3d);
+//draw_set_color(global.col3d);
+draw_set_color(c_white);
 d3d_set_projection(x,y,z,xn,yn,zn,0,0,1);
 
-d3d_draw_ellipsoid(x-2000,y-2000,z-1000,x+2000,y+2000,z+1000,background_get_texture(stars3d),32,32,24);
+d3d_draw_ellipsoid(x-drawdist,y-drawdist,z-drawdist/2,x+drawdist,y+drawdist,z+drawdist/2,background_get_texture(stars3d),32,32,24);
 </string>
           </argument>
         </arguments>

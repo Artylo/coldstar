@@ -6,10 +6,14 @@
   <NewExtensions/>
   <sounds name="sound"/>
   <sprites name="sprites">
-    <sprite>sprites\s_circle</sprite>
-    <sprite>sprites\s_sun</sprite>
-    <sprites name="3d">
+    <sprites name="2D">
+      <sprite>sprites\s_circle</sprite>
+      <sprite>sprites\s_sun</sprite>
+    </sprites>
+    <sprites name="3D">
       <sprite>sprites\s_creature</sprite>
+      <sprite>sprites\s_plant</sprite>
+      <sprite>sprites\s_rock</sprite>
     </sprites>
   </sprites>
   <backgrounds name="background">
@@ -35,6 +39,8 @@
       <object>objects\o_player</object>
       <object>objects\o_floor</object>
       <object>objects\o_creature</object>
+      <object>objects\o_plant</object>
+      <object>objects\o_rock</object>
     </objects>
   </objects>
   <rooms name="rooms">

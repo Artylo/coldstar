@@ -14,13 +14,25 @@
 
 if(global.life3d)
 {
-    repeat 10*global.scale3d
+    repeat 160*global.scale3d
     {
         var rx = random(room_width);
         var ry = random(room_height);
         instance_create(rx,ry,o_creature);
     }
 }
+repeat 200*global.scale3d
+    {
+        var rx = random(room_width);
+        var ry = random(room_height);
+        instance_create(rx,ry,o_plant);
+    }
+repeat 100*global.scale3d
+    {
+        var rx = random(room_width);
+        var ry = random(room_height);
+        instance_create(rx,ry,o_rock);
+    }
 
 instance_create(0,0,o_floor);                         //Floor</code>
   <enableViews>0</enableViews>

@@ -246,8 +246,8 @@ if(instance_position(mouse_x,mouse_y,o_geometry) == id)
                 global.lifekind3d = lifekind;
             }
             
-        room_set_height(r3d,global.ResY*scale);
-        room_set_width(r3d,global.ResX*scale);
+        room_set_height(r3d,global.ResY*scale*4);
+        room_set_width(r3d,global.ResX*scale*4);
         room_goto_next();
     }
     
